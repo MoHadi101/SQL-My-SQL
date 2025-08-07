@@ -1,0 +1,89 @@
+ACID, deutsch auch AKID, ist eine Abkürzung in der Informatik. Es beschreibt häufig erwünschte Eigenschaften von Transaktionen in Datenbankmanagementsystemen (DBMS) und verteilten Systemen. Es steht für englisch atomicity, consistency, isolation und durability. Man spricht im Deutschen auch von AKID-Eigenschaften (Atomarität, Konsistenz, Isolation und Dauerhaftigkeit). Sie gelten als Voraussetzung für die Verlässlichkeit von Systemen. Das Akronym ACID zur Charakterisierung von Transaktionen wurde 1983 von den Informatikern Theo Härder und Andreas Reuter geprägt
+
+
+
+
+
+
+### Logging #########################################################
+
+### Transaktions-Log
+    Zur Erfüllung der ACID-Regeln ist für den Betrieb jedes Datenbank-Servers ein Transaktions-
+    Log erforderlich. Bevor irgendeine Änderungen dauerhaft in den Datenbankdateien
+    durchgeführt werden kann, muss diese Änderung im Transaktions-Log
+    festgehalten werden.
+    Details zum Inhalt dieser Dateien und zu möglichen Optimierungsmaßnahmen können im imMySQL-Handbuch nachlesen:
+    https://dev.mysql.com/doc/refman/8.0/en/innodb-redo-log.html
+    https://dev.mysql.com/doc/refman/8.0/en/optimizing-innodb-logging.html
+
+    Aus Effizienzgründen liegt das Transaktions-Log platzsparend in einem binären Format
+    vor. 
+
+    MySQL nennt das Transaktions-Log Redo Log. Ort und Größe werden durch diverse
+    innodb_log-Parameter in my.cnf gesteuert. Standardmäßig werden beim ersten Start
+    zwei jeweils 48 MByte große Dateien eingerichtet (ib_logfile0 und ib_logfile1).
+    Diese werden wechselweise immer wieder mit Daten zu den gerade aktuellen Transaktionen
+    überschrieben.
+    /var/lib/mysql
+
+
+
+### Update-Log
+    MySQL speichert im Update-Log alle in der Datenbank tatsächlich durchgeführten
+    Änderungen, also nur erfolgreich abgeschlossene Transaktionen. Neben INSERT-,
+    UPDATE- undDELETE-Kommandos landen in demLog auch Kommandos, die dasDatenbankschema
+    ändern (also ALTER TABLE etc.). Nicht protokolliert werden reine Abfragen
+    sowie abgebrochene Transaktionen.
+    Details zum Update-Log sind hier dokumentiert:
+    https://dev.mysql.com/doc/refman/8.0/en/binary-log.html
+
+
+
+
+SonstigeMySQL-Logging-Arten
+    In MySQL gibt es weitere Logging-Arten, von denen aber nur wenige standardmäßig
+    aktiv sind:
+
+### General Query Log
+    Das General Query Log protokolliert alle Verbindungen sowie alle ausgeführten
+    SQL-Kommandos. Dieses Log kann aber eine große Hilfe beim Debugging sein.
+
+### Slow Query Log
+    Das Slow Query Log protokolliert Abfragen, deren Verarbeitung länger braucht als
+    ein vorgegebener Zeitraum. Auch dieses Log ist standardmäßig nicht aktiv. Das Log
+    hilft bei der Performanceoptimierung (z. B. um Abfragen zu entdecken, die von
+    einem zusätzlichen Index profitieren würden).
+    Das Slow Query Log wird im Textformat aufgezeichnet. Wenn die Datei viele Einträge
+    enthält, hilft mysqldumpslow bei ihrer Auswertung.
+
+### DDL Log
+    Das DDL Log protokolliert Kommandos der Data Definition Language, also alle
+    Kommandos, die Änderungen am Schema von Datenbanken vornehmen (CREATE
+    TABLE, ALTER DATABASE usw.)
+
+### Error Log
+    Das Error Log protokolliert Status- und Fehlermeldungen, unter Linux oft in der
+    Datei /var/log/mysql/error.log. Je nach Konfiguration können die Fehlermeldungen
+    auch an das Linux-weite Syslog-Systemweitergegeben werden.
+
+### Relay Log
+    Bei einem Replikations-Client protokolliert das Relay Log die von einem anderen
+    Server empfangenen, zu replizierenden Datenänderungen.
+
+    Mehr Details finden Sie wie üblich imHandbuch:
+    https://dev.mysql.com/doc/refman/8.0/en/server-logs.html
+
+    ### Statement-based Replication und die Row-based Replicatio
+    Bei einem Replikations-Setup resultieren daraus zwei unterschiedliche Replikationsverfahren,
+    die Statement-based Replication und die Row-based Replication. (Details folgen im
+    nächsten Kapitel.)
+    DieMySQL-Dokumentation bezeichnet das Update-Log eher nichtssagend als Binary
+    Log. Es ist aus Performancegründen nicht standardmäßig aktiv. Die Aktivierung und
+    Konfiguration erfolgen durch binlog-Parameter in my.cnf.WeitereMySQL-spezifische
+    Details zum Update-Log sind hier dokumentiert:
+    https://dev.mysql.com/doc/refman/8.0/en/binary-log.html
+    
+    Die Logging-Dateien liegen, wie der Name schon ausdrückt, in einem binären Format
+    vor. Das Verarbeiten bzw. Auslesen dieser Dateien gelingt mit dem Kommando
+    mysqlbinlog.
+

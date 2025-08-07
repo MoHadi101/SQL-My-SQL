@@ -1,0 +1,45 @@
+
+
+
+OLTP und OLAP einfach erklärt // deutsch ca. 11 Min.
+https://www.youtube.com/watch?v=mmPkqSR7eXE 
+
+Beispielclip 𝗧𝗵𝗲𝗼𝗿𝗶𝗲: OLAP-Operationen - Matthias Wolf - ca. 19 Min.
+https://www.youtube.com/watch?v=xG-31YOHbhY&t=124s
+
+Beipsielclip 𝗣𝗿𝗮𝘅𝗶𝘀: Analyseabfragen im AdventureWorksDW Data Warehouse - Matthias Wolf - ca. 30 Min.
+https://www.youtube.com/watch?v=EL2SZtGN43w
+
+
+
+https://www.alexanderthamm.com/de/blog/olap-vs-oltp-unterschiede-in-der-data-warehouse-architektur/
+https://www.alexanderthamm.com/de/blog/data-warehouse-kompakt-erklaert/
+
+
+
+OLTP - Online Transaction Processing
+
+
+Typische Aufgaben sind:
+    operative Bereiche,
+    eine effiziente Abwicklung alltäglicher Transaktionen,
+    die Auftragsabwicklung,
+    die Bestandsverwaltung.
+
+Data Warehousing
+    ist für den Umgang mit kritischen Geschäftsentscheidungen und Datenoptimierungen unerlässlich. Sie helfen bei der Aufrechterhaltung der Kundenzufriedenheit, indem sie umfassende Erkenntnisse liefern. Sie dienen als wichtige Quellen, um wettbewerbsfähig zu bleiben und auf die Bedürfnisse des Marktes zu reagieren. Zu den führenden Unternehmen, die den Data-Warehousing-Sektor ausbauen, gehören Microsoft, Oracle und Google, gefolgt von SAP, IBM usw.
+
+    
+
+
+OLAP - Online Analytical Processing
+Typische Aufgaben sind:
+    informative Bereiche,
+    das generieren von Finanzberichten über größere Zeiträume,
+    die Prognose von Marktentwicklungen,
+    die Suche nach Unregelmäßigkeiten oder neuen Trends.
+
+
+
+
+

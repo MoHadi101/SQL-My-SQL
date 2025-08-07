@@ -1,0 +1,74 @@
+
+-- WENN ES SICH UM EINE GANZE DATENBANK HANDELT,DANN:
+mysqldump -u root uebungen > db_backup_uebungen.sql 
+-- mysqldump -uroot uebungen > db_backup_uebungen.sql 
+
+-- (mysql -ufmueller -pgeheim) psswort könnte auch so sein geschrieben
+
+
+
+Wenn es sich um alle DBs handelt, dann:
+    mysqldump -u root --all-databases > db_backup_uebungen.sql
+
+--  /home/hadi/Schreibtisch/grdb2
+
+
+
+
+-- Wenn es sich um bestimmte Tabellen innerhalb einer Datenbank handelt, dann:
+mysqldump -u root -p db_name table1 table2 > table_backup.sql
+ 
+-- Wir können sogar so weit gehen, die Ausgabe mit gzip automatisch zu komprimieren (wenn die Datenbank sehr groß ist):
+mysqldump -u root -p db_name | gzip > db_backup.sql.gz
+ 
+-- Wenn wir dies remote tun möchten und Zugriff auf den betreffenden Server haben, funktioniert Folgendes (vorausgesetzt, der MySQL-Server befindet sich auf Port 3306):
+mysqldump -P 3306 -h [ip_address] -u root -p db_name > db_backup.sql
+
+Backup mit Procedures und Trigger
+    mysqldump -u root -p datenbankname -R -e --routines --triggers --single-transaction > mybooks_backup.sql
+    (auch Parameter --help)
+
+
+Option Bedeutung 
+    --all-databases Sichert alle Datenbanken.
+    --defaults-extra-file=name Berücksichtigt die angegebene Konfigurationsdatei.
+    --flush-logs Startet eine neue Datei für das Update-Log (wichtig für inkrementelle Backups).
+    --master-data gleichwertig mit --source-data (veraltet, nur bis MySQL 8.0.25 verfügbar)
+    --no-data Sichert nur das Schema, nicht die Daten.
+    --single-transaction Liest die ganze Datenbank in einer Transaktion mit Read-Lock aus.
+    --skip-lock-tables Blockiert Tabellen nicht für andere Clients.
+    --routines Sichert auch Stored Procedures.
+    --source-data Fügt die aktuelle Position des Update-Logs in das Backup ein (zweckmäßig für das Einrichten eines Replikationssystems).
+    --triggers Sichert auch Trigger.
+
+### Daten einspielen
+        mysqladmin create newdb
+        mysql newdb < db_backup_uebungen.sql
+ 
+        source dbname.sql
+
+
+### Import Export
+
+ Damit outfile funktioniert muss in die my.cnf im verzeichnis /home/hadi/Schreibtisch/grdb2/my.cnf  oder /etc/mysql
+        [mysqld]
+        secure-file-priv = ""
+        dann Server neu starten
+        sudo /etc/init.d/mysql restart
+
+    SELECT * FROM t_proj INTO OUTFILE 'tproj.csv';
+
+   
+    MySQL schreibt die Datei möglicherweise in ein eigenes Datenverzeichnis, z. B. /var/lib/mysql/<Datenbankname>. Geben Sie den vollständigen Pfad an.
+
+
+use uebungen;
+LOAD DATA INFILE 'tproj.csv' INTO TABLE t_proj2;
+
+    CREATE TABLE `t_proj2` (
+     `id` int NOT NULL AUTO_INCREMENT,
+     `name` varchar(50) DEFAULT NULL,
+    `beginn` date DEFAULT NULL,
+     `ende` date DEFAULT NULL,
+     PRIMARY KEY (`id`)
+       );
